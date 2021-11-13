@@ -20,11 +20,8 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
-      - name: Clone repository
-        uses: actions/checkout@v2
-
-      - name: Change directory to repo clone
-        run: cd $GITHUB_WORKSPACE
+      - name: Set up Docker buildx
+        uses: docker/setup-buildx-action@v1
 
       - name: Set Docker tag name if any
         run: |
@@ -34,22 +31,16 @@ jobs:
             echo "DOCKERHUB_TAG=" >> $GITUB_ENV
           fi
 
-      - name: Build Linux image
-        run: |
-            docker build \
-              -f Dockerfile.linux \
-              -t ${{ secrets.DOCKERHUB_USERNAME }}/qt-build-linux-amd64-armhf${DOCKERHUB_TAG} \
-              .
+      - name: Build and push Linux image
+        uses: docker/build-push-action@v2
+        with:
+          file: Dockerfile.linux
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/qt-build-linux-amd64-armhf${{ env.DOCKERHUB_TAG }}
+          push: true
 
-      - name: Push Linux image to Docker Hub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/qt-build-linux-amd64-armhf${DOCKERHUB_TAG}
-
-      - name: Build Windows image
-        run: |
-            docker build \
-              -f Dockerfile.windows \
-              -t ${{ secrets.DOCKERHUB_USERNAME }}/qt-build-windows-amd64${DOCKERHUB_TAG} \
-              .
-
-      - name: Push Windows image to Docker Hub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/qt-build-windows-amd64${DOCKERHUB_TAG}
+      - name: Build and push Windows image
+        uses: docker/build-push-action@v2
+        with:
+          file: Dockerfile.windows
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/qt-build-windows-amd64${{ env.DOCKERHUB_TAG }}
+          push: true
