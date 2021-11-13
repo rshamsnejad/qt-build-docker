@@ -24,15 +24,18 @@ jobs:
         run: |
             docker build \
               -f Dockerfile.linux \
-              -t qt-build-linux-amd64-armhf \
+              -t $GITHUB_ACTOR/qt-build-linux-amd64-armhf \
               .
 
       - name: Push Linux image to Docker Hub
-        run: docker push rshamsnejad/qt-build-linux-amd64-armhf
+        run: docker push $GITHUB_ACTOR/qt-build-linux-amd64-armhf
 
       - name: Build Windows image
         run: |
             docker build \
               -f Dockerfile.windows \
-              -t qt-build-windows-amd64 \
+              -t $GITHUB_ACTOR/qt-build-windows-amd64 \
               .
+
+      - name: Push Windows image to Docker Hub
+        run: docker push $GITHUB_ACTOR/qt-build-windows-amd64
