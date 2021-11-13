@@ -21,7 +21,8 @@ jobs:
         run: cd $GITHUB_WORKSPACE
 
       - name: Build Linux image
-        run: docker build \
+        run: |
+            docker build \
               -f Dockerfile.linux \
               -t qt-build-linux-amd64-armhf \
               .
@@ -30,7 +31,8 @@ jobs:
         run: docker push rshamsnejad/qt-build-linux-amd64-armhf
 
       - name: Build Windows image
-        run: docker build \
+        run: |
+            docker build \
               -f Dockerfile.windows \
               -t qt-build-windows-amd64 \
               .
