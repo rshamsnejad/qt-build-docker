@@ -20,5 +20,14 @@ jobs:
       - name: Change directory to repo clone
         run: cd $GITHUB_WORKSPACE
 
-      - name: Launch build script
-        run: ./build-images.sh
+      - name: Build Linux image
+        run: docker build \
+              -f Dockerfile.linux \
+              -t qt-build-linux-amd64-armhf \
+              .
+
+      - name: Build Windows image
+        run: docker build \
+              -f Dockerfile.windows \
+              -t qt-build-windows-amd64 \
+              .
