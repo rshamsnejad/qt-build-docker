@@ -31,4 +31,5 @@ RUN apt-get update && \
 
 ENV QEMU_LD_PREFIX /usr/arm-linux-gnueabihf
 
+ENV OUTPUT_DIR /workdir/output
 WORKDIR /workdir

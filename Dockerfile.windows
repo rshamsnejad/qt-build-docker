@@ -22,4 +22,5 @@ RUN pacman --noconfirm -S \
     mingw-w64-cmake \
     mingw-w64-qt5-base
 
+ENV OUTPUT_DIR /workdir/output
 WORKDIR /workdir
