@@ -12,9 +12,10 @@ jobs:
 
     steps:
       - name: Set up QEMU
-        run: apt-get install -y qemu-user-static
 
-      - uses: actions/checkout@v2
+      - name: Clone repository
+        uses: actions/checkout@v2
+
       - name: Change directory to repo clone
         run: cd $GITHUB_WORKSPACE
 
