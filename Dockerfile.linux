@@ -10,7 +10,6 @@ RUN apt-get update && \
 FROM --platform=linux/amd64 debian:buster
 
 ENV RPI_SYSROOT /rpi-sysroot
-ENV OUTPUT_DIR  /output
 
 # Gather the armhf Qt libs
 RUN mkdir -p  ${RPI_SYSROOT}/usr ${RPI_SYSROOT}/lib

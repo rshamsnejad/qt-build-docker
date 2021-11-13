@@ -1,7 +1,5 @@
 FROM archlinux:latest
 
-ENV OUTPUT_DIR  /output
-
 RUN echo "VerbosePkgLists" >> /etc/pacman.conf
 RUN echo "ParallelDownloads = 5" >> /etc/pacman.conf
 RUN pacman --noconfirm -Syyu
