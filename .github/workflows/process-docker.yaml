@@ -26,22 +26,30 @@ jobs:
       - name: Change directory to repo clone
         run: cd $GITHUB_WORKSPACE
 
+      - name: Set Docker tag name if any
+        run: |
+          if [ -n "${GITHUB_REF_NAME}" ] ; then
+            echo "DOCKERHUB_TAG=:${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          else
+            echo "DOCKERHUB_TAG=" >> $GITUB_ENV
+          fi
+
       - name: Build Linux image
         run: |
             docker build \
               -f Dockerfile.linux \
-              -t ${{ secrets.DOCKERHUB_USERNAME }}/qt-build-linux-amd64-armhf \
+              -t ${{ secrets.DOCKERHUB_USERNAME }}/qt-build-linux-amd64-armhf${DOCKERHUB_TAG} \
               .
 
       - name: Push Linux image to Docker Hub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/qt-build-linux-amd64-armhf
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/qt-build-linux-amd64-armhf${DOCKERHUB_TAG}
 
       - name: Build Windows image
         run: |
             docker build \
               -f Dockerfile.windows \
-              -t ${{ secrets.DOCKERHUB_USERNAME }}/qt-build-windows-amd64 \
+              -t ${{ secrets.DOCKERHUB_USERNAME }}/qt-build-windows-amd64${DOCKERHUB_TAG} \
               .
 
       - name: Push Windows image to Docker Hub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/qt-build-windows-amd64
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/qt-build-windows-amd64${DOCKERHUB_TAG}
