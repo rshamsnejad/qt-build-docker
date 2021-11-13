@@ -12,6 +12,7 @@ jobs:
 
     steps:
       - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
 
       - name: Clone repository
         uses: actions/checkout@v2
