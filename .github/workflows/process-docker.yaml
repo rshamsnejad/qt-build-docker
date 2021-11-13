@@ -1,0 +1,19 @@
+name: Build and publish Docker images
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v**'
+
+jobs:
+  build:
+    name: Docker images building and publishing
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Change directory to repo clone
+        run: cd $GITHUB_WORKSPACE
+
+      - name: Launch build script
+        run: ./build-images.sh

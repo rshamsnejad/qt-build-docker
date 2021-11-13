@@ -1,0 +1,25 @@
+FROM archlinux:latest
+
+ENV OUTPUT_DIR  /output
+
+RUN echo "VerbosePkgLists" >> /etc/pacman.conf
+RUN echo "ParallelDownloads = 5" >> /etc/pacman.conf
+RUN pacman --noconfirm -Syyu
+
+# Add mingw-repo
+RUN \
+        pacman-key --init \
+    &&  pacman-key --recv-keys B9E36A7275FC61B464B67907E06FE8F53CDC6A4C \
+    &&  pacman-key --finger    B9E36A7275FC61B464B67907E06FE8F53CDC6A4C \
+    &&  pacman-key --lsign-key B9E36A7275FC61B464B67907E06FE8F53CDC6A4C \
+    &&  echo "[ownstuff]" >> /etc/pacman.conf \
+    &&  echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf \
+    &&  echo "Server = https://ftp.f3l.de/~martchus/\$repo/os/\$arch" >> /etc/pacman.conf \
+    &&  echo "Server = https://martchus.no-ip.biz/repo/arch/\$repo/os/\$arch" >> /etc/pacman.conf \
+    &&  pacman -Sy
+
+# Install MinGW toolchain
+RUN pacman --noconfirm -S \
+    make \
+    mingw-w64-cmake \
+    mingw-w64-qt5-base
