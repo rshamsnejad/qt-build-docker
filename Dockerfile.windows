@@ -23,3 +23,5 @@ RUN pacman --noconfirm -S \
     make \
     mingw-w64-cmake \
     mingw-w64-qt5-base
+
+WORKDIR /workdir

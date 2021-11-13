@@ -31,3 +31,5 @@ RUN apt-get update && \
         qt5-default
 
 ENV QEMU_LD_PREFIX /usr/arm-linux-gnueabihf
+
+WORKDIR /workdir
