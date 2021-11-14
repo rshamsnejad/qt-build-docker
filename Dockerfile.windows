@@ -1,26 +1,20 @@
-FROM archlinux:latest
+# escape=`
 
-RUN echo "VerbosePkgLists" >> /etc/pacman.conf
-RUN echo "ParallelDownloads = 5" >> /etc/pacman.conf
-RUN pacman --noconfirm -Syyu
+FROM mcr.microsoft.com/windows:20H2
 
-# Add mingw-repo
-RUN \
-        pacman-key --init \
-    &&  pacman-key --recv-keys B9E36A7275FC61B464B67907E06FE8F53CDC6A4C \
-    &&  pacman-key --finger    B9E36A7275FC61B464B67907E06FE8F53CDC6A4C \
-    &&  pacman-key --lsign-key B9E36A7275FC61B464B67907E06FE8F53CDC6A4C \
-    &&  echo "[ownstuff]" >> /etc/pacman.conf \
-    &&  echo "SigLevel = Optional TrustAll" >> /etc/pacman.conf \
-    &&  echo "Server = https://ftp.f3l.de/~martchus/\$repo/os/\$arch" >> /etc/pacman.conf \
-    &&  echo "Server = https://martchus.no-ip.biz/repo/arch/\$repo/os/\$arch" >> /etc/pacman.conf \
-    &&  pacman -Sy
+RUN mkdir C:\tools
+RUN setx path "%path%;C:\tools"
 
-# Install MinGW toolchain
-RUN pacman --noconfirm -S \
-    make \
-    mingw-w64-cmake \
-    mingw-w64-qt5-base
+ADD https://github.com/miurahr/aqtinstall/releases/download/Continuous/aqt.exe C:\tools\
 
-ENV OUTPUT_DIR /workdir/output
-WORKDIR /workdir
+RUN aqt install-tool windows desktop tools_cmake qt.tools.cmake.win64 --outputdir C:\Qt
+RUN aqt install-tool windows desktop tools_mingw qt.tools.win64_mingw810 --outputdir C:\Qt
+RUN aqt install-qt windows desktop 5.15.2 win64_mingw81 --outputdir C:\Qt `
+        --archives`
+            qtbase
+
+RUN setx path "%path%;C:\Qt\Tools\CMake_64\bin;C:\Qt\Tools\mingw810_64\bin"
+
+RUN powershell Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
+
+WORKDIR C:\workdir
