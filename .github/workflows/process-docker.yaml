@@ -44,6 +44,9 @@ jobs:
     runs-on: windows-latest
 
     steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+
       - name: Set Docker tag name if any
         run: |
           chcp 65001 #set code page to utf-8
