@@ -28,7 +28,7 @@ jobs:
           if [ -n "${GITHUB_REF_NAME}" ] ; then
             echo "DOCKERHUB_TAG=:${GITHUB_REF_NAME}" >> $GITHUB_ENV
           else
-            echo "DOCKERHUB_TAG=" >> $GITUB_ENV
+            echo "DOCKERHUB_TAG=:${GITHUB_SHA}" >> $GITUB_ENV
           fi
 
       - name: Build and push Linux image
