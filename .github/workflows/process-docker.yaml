@@ -50,6 +50,9 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Set up Docker buildx
+        uses: docker/setup-buildx-action@v1
+
       - name: Set Docker tag name if any
         run: |
           chcp 65001 #set code page to utf-8
