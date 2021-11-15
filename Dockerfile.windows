@@ -1,6 +1,6 @@
 # escape=`
 
-FROM mcr.microsoft.com/windows:1909
+FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
 RUN mkdir C:\tools
 RUN setx path "%path%;C:\tools"
